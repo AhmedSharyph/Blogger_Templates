@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="dv" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><data:blog.pageTitle/></title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        @font-face {
+            font-family: 'Faruma';
+            src: url('https://raw.githubusercontent.com/AhmedSharyph/website-assets/main/Faruma.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        body {
+            font-family: 'Faruma', sans-serif;
+        }
+    </style>
+    <b:skin><![CDATA[
+        .post-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+        }
+        .post-thumbnail-wrapper {
+            flex-shrink: 0;
+            width: 160px;
+            height: 120px;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: #f5f5f5;
+            position: relative;
+        }
+        .post-thumbnail-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .post-thumbnail-wrapper:hover img {
+            transform: scale(1.05);
+        }
+        .post-thumbnail-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bbb;
+        }
+        .post-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .post-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+        .post-card:hover {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .post-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #a0a0a0;
+            font-size: 0.85rem;
+        }
+        .post-meta-item svg {
+            width: 14px;
+            height: 14px;
+        }
+        .post-body {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: #1a1a1a;
+        }
+        .post-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.75rem;
+            margin: 1.5rem 0;
+        }
+        .post-body h2, .post-body h3, .post-body h4 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+        .post-body a {
+            color: #0d9488;
+            text-decoration: underline;
+        }
+        .post-body blockquote {
+            border-right: 4px solid #0d9488;
+            padding-right: 1rem;
+            margin: 1.5rem 0;
+            color: #4a4a4a;
+            font-style: italic;
+        }
+        
+        .search-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal.active {
+            display: flex;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            outline: none;
+            direction: rtl;
+        }
+        .search-input:focus {
+            border-color: #0d9488;
+        }
+        .search-result-item {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-align: right;
+        }
+        .search-result-item:hover {
+            background: #f3f4f6;
+        }
+        .search-result-item h4 {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        .search-result-item p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+        .search-result-item .post-date {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+        .search-close {
+            float: left;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #6b7280;
+            cursor: pointer;
+        }
+        .search-close:hover {
+            color: #1a1a1a;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            background: #0d9488;
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.4);
+            z-index: 40;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .scroll-top.visible {
+            display: flex;
+        }
+        
+        /* Compact icon-only share buttons */
+        .share-icons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .share-icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 9999px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .share-icon-btn:hover {
+            transform: scale(1.1);
+        }
+        .share-icon-btn.twitter {
+            background: #1DA1F2;
+            color: white;
+        }
+        .share-icon-btn.facebook {
+            background: #1877F2;
+            color: white;
+        }
+        .share-icon-btn.linkedin {
+            background: #0A66C2;
+            color: white;
+        }
+        .share-icon-btn.whatsapp {
+            background: #25D366;
+            color: white;
+        }
+        .share-icon-btn.copy {
+            background: #f4f4f5;
+            color: #52525b;
+        }
+        .share-icon-btn.copy:hover {
+            background: #e4e4e7;
+        }
+        
+        /* Dropdown styling for navigation menus */
+        .nav-dropdown {
+            position: relative;
+        }
+        .nav-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 180px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-radius: 0.75rem;
+            padding: 0.5rem 0;
+            z-index: 50;
+            border: 1px solid #f4f4f5;
+            text-align: right;
+        }
+        .nav-dropdown:hover .nav-dropdown-content {
+            display: block;
+        }
+        .nav-dropdown-content a {
+            display: block;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #52525b;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-dropdown-content a:hover {
+            background: #f4f4f5;
+            color: #0d9488;
+        }
+        
+        @media (max-width: 640px) {
+            .post-item { flex-direction: column; }
+            .post-thumbnail-wrapper {
+                width: 100%;
+                height: 200px;
+            }
+            .search-modal-content { padding: 1.5rem; }
+        }
+    ]]></b:skin>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-xl bg-white/80 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a expr:href="data:blog.homepageUrl" class="font-bold tracking-tight text-xl text-zinc-900 hover:text-teal-600 transition">
+                <data:blog.title/>
+            </a>
+            
+            <!-- Desktop Nav with Dynamic Categories and Blogger LinkList integration -->
+            <nav class="hidden md:flex items-center space-x-reverse space-x-8 text-sm font-medium text-zinc-600">
+                <a expr:href="data:blog.homepageUrl" class="hover:text-zinc-900 transition">މައިގަނޑު (Home)</a>
+                <a href="/p/about.html" class="hover:text-zinc-900 transition">ތަޢާރަފਤު (About)</a>
+
+                <!-- Dynamic Categories Dropdown Menu -->
+                <div class="nav-dropdown py-2">
+                    <button type="button" class="flex items-center gap-1 hover:text-zinc-900 transition focus:outline-none">
+                        ބައިތައް (Categories) <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="navCategoryList" class="nav-dropdown-content">
+                        <!-- Injected via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Blogger LinkList Gadget Dropdown Menu -->
+                <b:section id="nav-links-section" showaddelement="no">
+                    <b:widget id="LinkList99" locked="false" title="ލިންކ్‌ތައް" type="LinkList">
+                        <b:includable id="main">
+                            <div class="nav-dropdown py-2">
+                                <button type="button" class="flex items-center gap-1 hover:text-zinc-900 transition focus:outline-none">
+                                    <data:title/> <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                                <div class="nav-dropdown-content">
+                                    <b:loop values="data:links" var="link">
+                                        <a expr:href="data:link.target"><data:link.name/></a>
+                                    </b:loop>
+                                </div>
+                            </div>
+                        </b:includable>
+                    </b:widget>
+                </b:section>
+
+                <button id="searchToggle" class="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition cursor-pointer">
+                    <i class="fas fa-search"></i>
+                    <span class="text-xs">ހޯދާ (Search)</span>
+                    <kbd class="px-1.5 py-0.5 bg-white rounded text-xs text-zinc-400 border border-zinc-200">&#8984;K</kbd>
+                </button>
+            </nav>
+
+            <div class="flex items-center gap-2 md:hidden">
+                <button id="searchToggleMobile" class="p-2 text-zinc-600 hover:text-zinc-900 transition">
+                    <i class="fas fa-search text-lg"></i>
+                </button>
+                <button id="menuToggle" class="p-2 text-zinc-600 hover:text-zinc-900 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-white/95 backdrop-blur-sm px-4 py-4 space-y-3 shadow-lg text-right">
+            <a expr:href="data:blog.homepageUrl" class="block text-zinc-600 font-medium hover:text-teal-600 transition">މައިގަނޑު</a>
+            <a href="/p/about.html" class="block text-zinc-600 font-medium hover:text-teal-600 transition">ތަޢާރަފް</a>
+            <div class="pt-2 border-t border-zinc-100">
+                <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">ބައިތައް</p>
+                <div id="mobileCategoryList" class="space-y-2 pr-2"></div>
+            </div>
+            <div class="pt-2 border-t border-zinc-100">
+                <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">ލިންކ్‌ތައް</p>
+                <div class="space-y-2 pr-2">
+                    <b:section id="mobile-links-section" showaddelement="no">
+                        <b:widget id="LinkList98" locked="false" title="ލިންކ్‌ތައް" type="LinkList">
+                            <b:includable id="main">
+                                <b:loop values="data:links" var="link">
+                                    <a expr:href="data:link.target" class="block text-sm text-zinc-600 hover:text-teal-600 transition"><data:link.name/></a>
+                                </b:loop>
+                            </b:includable>
+                        </b:widget>
+                    </b:section>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <button id="searchClose" class="search-close">&amp;times;</button>
+            <div class="relative">
+                <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+                <input id="searchInput" type="text" class="search-input pr-10" placeholder="ލިޔުންތަކުން ހޯދާ..." />
+            </div>
+            <div id="searchResults" class="mt-4 space-y-2"></div>
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 py-10">
+        <main>
+            <b:section id="main-content" class="space-y-6" showaddelement="yes">
+                <b:widget id="Blog1" locked="true" title="Blog Posts" type="Blog">
+                    <b:includable id="main">
+                        <div class="space-y-6">
+                            <b:loop values="data:posts" var="post">
+                                <article class="post-card">
+                                    <b:if cond="data:blog.pageType == &quot;item&quot;">
+                                        <!-- SINGLE POST VIEW -->
+                                        <div class="post-content">
+                                            <h1 class="text-2xl md:text-3xl font-bold text-zinc-900 mb-3 leading-tight">
+                                                <data:post.title/>
+                                            </h1>
+                                            
+                                            <div class="post-meta mb-6">
+                                                <span class="post-meta-item">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                    <span expr:content="data:post.date.iso8601"><data:post.date/></span>
+                                                </span>
+                                                <span class="post-meta-item">
+                                                    <i class="far fa-clock"></i>
+                                                    <span>ކިޔަން ނަގާނީ <span class="read-time-output" expr:data-body="data:post.body">1</span> މިނެޓް</span>
+                                                </span>
+                                            </div>
+
+                                            <div class="post-body">
+                                                <data:post.body/>
+                                            </div>
+
+                                            <!-- Compact share icons strictly at the end of the full article content -->
+                                            <div class="mt-10 pt-6 border-t border-zinc-200 flex items-center justify-between flex-wrap gap-4">
+                                                <span class="text-xs font-semibold uppercase tracking-wider text-zinc-400">މި ލިޔުން ޝެއާ ކުރައްވާ</span>
+                                                <div class="share-icons">
+                                                    <button class="share-icon-btn twitter" onclick="sharePost('twitter')" title="Twitter ގައި ޝެއާ ކުރައްވާ">
+                                                        <i class="fab fa-twitter"></i>
+                                                    </button>
+                                                    <button class="share-icon-btn facebook" onclick="sharePost('facebook')" title="Facebook ގައި ޝެއާ ކުރައްވާ">
+                                                        <i class="fab fa-facebook-f"></i>
+                                                    </button>
+                                                    <button class="share-icon-btn linkedin" onclick="sharePost('linkedin')" title="LinkedIn ގައި ޝެއާ ކުރައްވާ">
+                                                        <i class="fab fa-linkedin-in"></i>
+                                                    </button>
+                                                    <button class="share-icon-btn whatsapp" onclick="sharePost('whatsapp')" title="WhatsApp ގައި ޝެއާ ކުރައްވާ">
+                                                        <i class="fab fa-whatsapp"></i>
+                                                    </button>
+                                                    <button class="share-icon-btn copy" onclick="copyLink()" title="ލިންކް ކޮפּީ ކުރައްވާ">
+                                                        <i class="fas fa-link"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <b:else/>
+                                        <!-- HOMEPAGE VIEW -->
+                                        <div class="post-item">
+                                            <div class="post-thumbnail-wrapper">
+                                                <b:if cond="data:post.thumbnailUrl">
+                                                    <a expr:href="data:post.url">
+                                                        <img expr:alt="data:post.title" expr:src="data:post.thumbnailUrl" loading="lazy" />
+                                                    </a>
+                                                <b:else/>
+                                                    <div class="post-thumbnail-placeholder">
+                                                        <i class="fas fa-image text-3xl text-zinc-400"></i>
+                                                    </div>
+                                                </b:if>
+                                            </div>
+                                            
+                                            <div class="post-content">
+                                                <h2 class="text-xl font-bold text-zinc-900 mb-1.5 leading-tight">
+                                                    <a expr:href="data:post.url" class="hover:text-teal-600 transition"><data:post.title/></a>
+                                                </h2>
+                                                
+                                                <div class="post-meta mb-3">
+                                                    <span class="post-meta-item">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                        </svg>
+                                                        <span expr:content="data:post.date.iso8601"><data:post.date/></span>
+                                                    </span>
+                                                    <span class="post-meta-item">
+                                                        <i class="far fa-clock"></i>
+                                                        <span>ކިޔަން ނަގާނީ <span class="read-time-output" expr:data-body="data:post.snippet">1</span> މިނެޓް</span>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div class="text-zinc-600 text-sm leading-relaxed line-clamp-2 mb-3">
+                                                    <data:post.snippet/>
+                                                </div>
+                                                <a expr:href="data:post.url" class="inline-flex items-center text-sm font-medium text-teal-600 hover:text-teal-700 transition">
+                                                    ފުރިހަމައަށް ވިދާޅުވާން 
+                                                    <svg class="w-4 h-4 mr-1 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </b:if>
+                                </article>
+                            </b:loop>
+                        </div>
+                    </b:includable>
+                </b:widget>
+            </b:section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white/80 backdrop-blur-sm py-10 mt-16 text-center text-sm text-zinc-400">
+        <div class="max-w-4xl mx-auto px-4">
+            <p>&#169; 2026 <data:blog.title/>. ހުރިހា ހައްގެއް ހިމާޔަތްކުރެވިފައި</p>
+            <p class="mt-2 text-xs text-zinc-400">ބްލޮގަރ • ޓޭލްဝިންޑް ސީއެސްއެސް</p>
+        </div>
+    </footer>
+
+    <script>
+    //<![CDATA[
+    (function() {
+        'use strict';
+        
+        // ----- Calculate Reading Time Dynamically -----
+        function calculateReadingTimes() {
+            var elements = document.querySelectorAll('.read-time-output');
+            elements.forEach(function(el) {
+                var text = el.getAttribute('data-body') || el.innerText || '';
+                var cleanText = text.replace(/<[^>]*>/g, '');
+                var words = cleanText.trim().split(/\s+/).length;
+                var wpm = 200;
+                var minutes = Math.ceil(words / wpm);
+                if (minutes < 1) minutes = 1;
+                el.textContent = minutes;
+            });
+        }
+        
+        // ----- Mobile Menu -----
+        var menuToggle = document.getElementById('menuToggle');
+        var mobileMenu = document.getElementById('mobileMenu');
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+        
+        // ----- Search Modal -----
+        var searchToggle = document.getElementById('searchToggle');
+        var searchToggleMobile = document.getElementById('searchToggleMobile');
+        var searchModal = document.getElementById('searchModal');
+        var searchClose = document.getElementById('searchClose');
+        var searchInput = document.getElementById('searchInput');
+        var searchResults = document.getElementById('searchResults');
+        
+        function openSearch() {
+            searchModal.classList.add('active');
+            setTimeout(function() { searchInput.focus(); }, 100);
+        }
+        
+        function closeSearch() {
+            searchModal.classList.remove('active');
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        }
+        
+        if (searchToggle) searchToggle.addEventListener('click', openSearch);
+        if (searchToggleMobile) searchToggleMobile.addEventListener('click', openSearch);
+        if (searchClose) searchClose.addEventListener('click', closeSearch);
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSearch();
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                if (searchModal.classList.contains('active')) {
+                    closeSearch();
+                } else {
+                    openSearch();
+                }
+            }
+        });
+        
+        if (searchModal) {
+            searchModal.addEventListener('click', function(e) {
+                if (e.target === this) closeSearch();
+            });
+        }
+        
+        // ----- Search Functionality -----
+        var allPosts = [];
+        
+        function fetchAllPosts() {
+            fetch('/feeds/posts/summary?alt=json&amp;max-results=150')
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    var entries = data.feed.entry || [];
+                    allPosts = entries.map(function(entry) {
+                        var link = entry.link.find(function(l) { return l.rel === 'alternate'; });
+                        return {
+                            id: entry.id.$t,
+                            title: entry.title.$t || 'Untitled',
+                            snippet: entry.summary ? entry.summary.$t.substring(0, 150) : '',
+                            url: link ? link.href : '#',
+                            date: new Date(entry.published.$t).toLocaleDateString()
+                        };
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Error fetching posts:', error);
+                });
+        }
+        
+        function searchPosts(query) {
+            if (!query || query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+            
+            var term = query.toLowerCase();
+            var results = allPosts.filter(function(post) {
+                return post.title.toLowerCase().includes(term) || 
+                       post.snippet.toLowerCase().includes(term);
+            });
+            
+            results = results.slice(0, 10);
+            
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="no-results"><i class="fas fa-search text-4xl text-zinc-300 mb-2"></i><p>ކއްވެސް ނުފެނުނު</p></div>';
+                return;
+            }
+            
+            var html = '';
+            results.forEach(function(post) {
+                html += '<a href="' + post.url + '" class="search-result-item block">';
+                html += '<h4>' + post.title + '</h4>';
+                html += '<p>' + post.snippet + '</p>';
+                html += '<span class="post-date">' + post.date + '</span>';
+                html += '</a>';
+            });
+            
+            searchResults.innerHTML = html;
+        }
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                searchPosts(this.value);
+            });
+        }
+        
+        // ----- Share Functions -----
+        window.sharePost = function(platform) {
+            var url = encodeURIComponent(window.location.href);
+            var title = encodeURIComponent(document.querySelector('h1') ? document.querySelector('h1').textContent : '');
+            var shareUrls = {
+                twitter: 'https://twitter.com/intent/tweet?url=' + url + '&amp;text=' + title,
+                facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + url,
+                linkedin: 'https://www.linkedin.com/sharing/share-offsite/?url=' + url,
+                whatsapp: 'https://api.whatsapp.com/send?text=' + title + '%20-%20' + url
+            };
+            window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+        };
+        
+        window.copyLink = function() {
+            navigator.clipboard.writeText(window.location.href).then(function() {
+                var btn = event.target.closest('.share-icon-btn');
+                var originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check text-teal-600"></i>';
+                setTimeout(function() { btn.innerHTML = originalHtml; }, 2000);
+            });
+        };
+        
+        // ----- Scroll to Top -----
+        var scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 500) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+        
+        if (scrollBtn) {
+            scrollBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        // ----- Fetch Categories for Menus -----
+        function fetchCategories() {
+            fetch('/feeds/posts/summary?alt=json&amp;max-results=150')
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    var entries = data.feed.entry || [];
+                    var categoryMap = {};
+                    
+                    entries.forEach(function(entry) {
+                        if (entry.category) {
+                            entry.category.forEach(function(cat) {
+                                var term = cat.term;
+                                if (!categoryMap[term]) {
+                                    categoryMap[term] = { name: term };
+                                }
+                            });
+                        }
+                    });
+                    
+                    var categories = Object.values(categoryMap);
+                    var navList = document.getElementById('navCategoryList');
+                    var mobileList = document.getElementById('mobileCategoryList');
+                    
+                    var navHtml = '';
+                    var mobileHtml = '';
+                    
+                    categories.forEach(function(cat) {
+                        var catUrl = '/search/label/' + encodeURIComponent(cat.name);
+                        navHtml += '<a href="' + catUrl + '">' + cat.name + '</a>';
+                        mobileHtml += '<a href="' + catUrl + '" class="block text-sm text-zinc-600 hover:text-teal-600 transition">' + cat.name + '</a>';
+                    });
+                    
+                    if (navList) navList.innerHTML = navHtml;
+                    if (mobileList) mobileList.innerHTML = mobileHtml;
+                })
+                .catch(function(error) {
+                    console.error('Error fetching categories:', error);
+                });
+        }
+        
+        fetchAllPosts();
+        fetchCategories();
+        calculateReadingTimes();
+        
+    })();
+    //]]>
+    </script>
+</body>
+</html>
