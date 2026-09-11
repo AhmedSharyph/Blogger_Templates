@@ -1,0 +1,978 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html class='scroll-smooth' dir='rtl' lang='dv' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+    <meta charset='UTF-8'/>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
+    <title><data:blog.pageTitle/></title>
+
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css' rel='stylesheet'/>
+
+    <b:skin><![CDATA[
+    @font-face {
+        font-family: 'Faruma';
+        src: url('https://raw.githubusercontent.com/AhmedSharyph/website-assets/main/Faruma.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+        --surface-2: #f4f4f5;
+        --border: #e5e7eb;
+        --text: #18181b;
+        --text-soft: #52525b;
+        --text-muted: #a1a1aa;
+        --accent: #0d9488;
+        --accent-hover: #0f766e;
+        --radius-sm: 0.5rem;
+        --radius-md: 0.75rem;
+        --radius-lg: 1rem;
+        --radius-xl: 1.5rem;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+        --shadow-md: 0 10px 40px rgba(0,0,0,0.08);
+        --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+        --transition: 0.25s ease;
+        --header-h: 4rem;
+    }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+        font-family: 'Faruma', sans-serif;
+        direction: rtl;
+        text-align: right;
+        background: #fff;
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    img { max-width: 100%; display: block; }
+
+    /* HEADER */
+    .site-header {
+        position: sticky; top: 0; z-index: 50;
+        background: rgba(255,255,255,0.82);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .header-inner {
+        max-width: 72rem; margin: 0 auto; padding: 0 1rem;
+        height: var(--header-h);
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 1rem;
+    }
+    .site-title {
+        font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;
+        color: var(--text);
+        transition: color var(--transition);
+        white-space: nowrap;
+    }
+    .site-title:hover { color: var(--accent); }
+
+    .primary-nav {
+        display: flex; align-items: center; gap: 2rem;
+        font-size: 0.875rem; font-weight: 500; color: var(--text-soft);
+    }
+    .primary-nav > a { transition: color var(--transition); }
+    .primary-nav > a:hover { color: var(--text); }
+
+    .lang-chip {
+        display: inline-flex; align-items: center; gap: 0.375rem;
+        padding: 0.375rem 0.75rem;
+        background: var(--surface-2);
+        border-radius: var(--radius-sm);
+        color: var(--text-soft);
+        font-size: 0.75rem; font-weight: 600;
+        transition: background var(--transition);
+    }
+    .lang-chip:hover { background: #e4e4e7; color: var(--text); }
+    .lang-chip i { color: var(--text-muted); }
+
+    .search-toggle {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.375rem 0.75rem;
+        background: var(--surface-2);
+        border-radius: var(--radius-sm);
+        color: var(--text-soft);
+        transition: background var(--transition);
+    }
+    .search-toggle:hover { background: #e4e4e7; }
+    .search-toggle span { font-size: 0.75rem; }
+    .search-toggle kbd {
+        padding: 0.125rem 0.375rem;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 0.25rem;
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        font-family: ui-monospace, monospace;
+        direction: ltr;
+    }
+
+    .nav-dropdown { position: relative; padding: 0.5rem 0; }
+    .nav-dropdown-trigger {
+        display: inline-flex; align-items: center; gap: 0.25rem;
+        color: inherit; font-size: inherit; font-weight: inherit;
+        transition: color var(--transition);
+    }
+    .nav-dropdown-trigger i { font-size: 0.7rem; }
+    .nav-dropdown:hover .nav-dropdown-trigger { color: var(--text); }
+
+    .nav-dropdown-content {
+        display: none;
+        position: absolute; top: 100%; right: 0;
+        background: #fff;
+        min-width: 180px;
+        padding: 0.5rem 0;
+        border: 1px solid var(--surface-2);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        z-index: 50;
+        text-align: right;
+    }
+    .nav-dropdown:hover .nav-dropdown-content { display: block; }
+    .nav-dropdown-content a {
+        display: block;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        color: var(--text-soft);
+        transition: background var(--transition), color var(--transition);
+    }
+    .nav-dropdown-content a:hover { background: var(--surface-2); color: var(--accent); }
+
+    .mobile-actions {
+        display: none;
+        align-items: center; gap: 0.5rem;
+    }
+    .mobile-actions button,
+    .mobile-actions a {
+        padding: 0.5rem;
+        color: var(--text-soft);
+        transition: color var(--transition);
+        font-size: 1.05rem;
+    }
+    .mobile-actions button:hover,
+    .mobile-actions a:hover { color: var(--text); }
+    .mobile-lang { font-size: 0.75rem !important; font-weight: 600; }
+
+    .mobile-menu {
+        display: none;
+        padding: 1rem;
+        background: rgba(255,255,255,0.97);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        border-top: 1px solid var(--surface-2);
+        text-align: right;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu > a {
+        display: block;
+        padding: 0.5rem 0;
+        color: var(--text-soft);
+        font-weight: 500;
+        transition: color var(--transition);
+    }
+    .mobile-menu > a:hover { color: var(--accent); }
+    .mobile-menu .mobile-lang-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0.5rem 0;
+        border-top: 1px solid var(--surface-2);
+        margin-top: 0.5rem;
+        color: var(--text-soft);
+        font-weight: 500;
+        transition: color var(--transition);
+    }
+    .mobile-menu .mobile-lang-row:hover { color: var(--accent); }
+    .mobile-menu .mobile-lang-row .tag {
+        font-size: 0.75rem; font-weight: 600; color: var(--accent);
+    }
+    .mobile-menu .divider {
+        margin-top: 0.5rem; padding-top: 0.75rem;
+        border-top: 1px solid var(--surface-2);
+    }
+    .mobile-menu .section-label {
+        font-size: 0.7rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.06em;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+    }
+    .mobile-menu .section-list {
+        display: flex; flex-direction: column; gap: 0.5rem;
+        padding-right: 0.5rem;
+    }
+    .mobile-menu .section-list a {
+        font-size: 0.875rem;
+        color: var(--text-soft);
+        transition: color var(--transition);
+        display: block;
+    }
+    .mobile-menu .section-list a:hover { color: var(--accent); }
+
+    /* SEARCH MODAL */
+    .search-modal {
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 1000;
+        display: none;
+        align-items: flex-start; justify-content: center;
+        padding-top: 10vh;
+        padding-left: 1rem; padding-right: 1rem;
+    }
+    .search-modal.active { display: flex; }
+
+    .search-modal-content {
+        background: #fff;
+        border-radius: var(--radius-xl);
+        padding: 2rem;
+        max-width: 600px;
+        width: 100%;
+        max-height: 70vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-lg);
+        animation: slideDown 0.3s ease;
+        position: relative;
+    }
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .search-close {
+        float: left;
+        font-size: 1.5rem;
+        color: var(--text-muted);
+        line-height: 1;
+        transition: color var(--transition);
+    }
+    .search-close:hover { color: var(--text); }
+
+    .search-input-wrap { position: relative; }
+    .search-input-wrap i {
+        position: absolute; right: 0.75rem; top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
+    .search-input {
+        width: 100%;
+        padding: 0.75rem 2.5rem 0.75rem 1rem;
+        border: 2px solid var(--border);
+        border-radius: var(--radius-md);
+        font-size: 1rem;
+        outline: none;
+        background: #fff;
+        color: var(--text);
+        direction: rtl;
+        font-family: inherit;
+        transition: border-color var(--transition);
+    }
+    .search-input:focus { border-color: var(--accent); }
+
+    .search-results {
+        margin-top: 1rem;
+        display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .search-result-item {
+        display: block;
+        padding: 0.75rem;
+        border-radius: var(--radius-sm);
+        transition: background var(--transition);
+        text-align: right;
+    }
+    .search-result-item:hover { background: var(--surface-2); }
+    .search-result-item h4 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.25rem; }
+    .search-result-item p { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+    .search-result-item .post-date { font-size: 0.75rem; color: #9ca3af; }
+
+    .no-results { text-align: center; padding: 2rem; color: #6b7280; }
+    .no-results i { display: block; font-size: 2.5rem; color: #d4d4d8; margin-bottom: 0.5rem; }
+
+    /* SCROLL TOP */
+    .scroll-top {
+        position: fixed; bottom: 2rem; left: 2rem;
+        width: 3rem; height: 3rem;
+        border-radius: 9999px;
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(13,148,136,0.4);
+        z-index: 40;
+        display: none;
+        align-items: center; justify-content: center;
+        transition: transform var(--transition), background var(--transition);
+    }
+    .scroll-top.visible { display: flex; }
+    .scroll-top:hover { transform: translateY(-2px); background: var(--accent-hover); }
+
+    /* MAIN */
+    .main-wrap {
+        max-width: 56rem;
+        margin: 0 auto;
+        padding: 2.5rem 1rem;
+    }
+    .post-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* POST CARD */
+    .post-card {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-sm);
+        transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .post-card:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+    .post-item {
+        display: flex;
+        gap: 1.25rem;
+        align-items: flex-start;
+        flex-direction: row-reverse;
+    }
+    .post-thumbnail-wrapper {
+        flex-shrink: 0;
+        width: 160px;
+        height: 120px;
+        overflow: hidden;
+        border-radius: var(--radius-lg);
+        background: #f5f5f5;
+        position: relative;
+    }
+    .post-thumbnail-wrapper img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+    .post-thumbnail-wrapper:hover img { transform: scale(1.05); }
+    .post-thumbnail-placeholder {
+        width: 100%; height: 100%;
+        background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+        display: flex; align-items: center; justify-content: center;
+        color: #bbb;
+        font-size: 1.75rem;
+    }
+    .post-content { flex: 1; min-width: 0; }
+    .post-content h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.4;
+        color: var(--text);
+        margin-bottom: 0.375rem;
+    }
+    .post-content h2 a { transition: color var(--transition); }
+    .post-content h2 a:hover { color: var(--accent); }
+    .post-content h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--text);
+        margin-bottom: 0.75rem;
+    }
+    .post-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.75rem;
+    }
+    .post-meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+    }
+    .post-meta-item i { font-size: 0.75rem; }
+    .post-snippet {
+        color: #52525b;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 0.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--accent);
+        transition: color var(--transition);
+    }
+    .read-more:hover { color: var(--accent-hover); }
+    .read-more i { font-size: 0.7rem; margin-right: 0.375rem; }
+
+    /* SINGLE POST BODY */
+    .post-body {
+        font-size: 1.05rem;
+        line-height: 2;
+        color: #1a1a1a;
+    }
+    .post-body p { margin-bottom: 1.25rem; }
+    .post-body img {
+        border-radius: var(--radius-md);
+        margin: 1.5rem 0;
+        max-width: 100%; height: auto;
+    }
+    .post-body h2, .post-body h3, .post-body h4 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+        line-height: 1.4;
+    }
+    .post-body a { color: var(--accent); text-decoration: underline; }
+    .post-body a:hover { color: var(--accent-hover); }
+    .post-body ul, .post-body ol { margin: 1rem 1.5rem 1.25rem 0; }
+    .post-body li { margin-bottom: 0.5rem; }
+    .post-body blockquote {
+        border-right: 4px solid var(--accent);
+        padding-right: 1rem;
+        margin: 1.5rem 0;
+        color: #4a4a4a;
+        font-style: italic;
+    }
+    .post-body pre {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        overflow-x: auto;
+        font-size: 0.875rem;
+        margin: 1.5rem 0;
+        direction: ltr;
+        text-align: left;
+    }
+    .post-body code {
+        background: var(--surface-2);
+        padding: 0.1rem 0.35rem;
+        border-radius: 0.25rem;
+        font-size: 0.9em;
+        direction: ltr;
+    }
+    .post-body pre code { background: none; padding: 0; }
+
+    /* SHARE */
+    .post-share {
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e4e4e7;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .post-share-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-muted);
+    }
+    .share-icons { display: flex; align-items: center; gap: 0.5rem; }
+    .share-icon-btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 2.25rem; height: 2.25rem;
+        border-radius: 9999px;
+        color: #fff;
+        font-size: 0.875rem;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .share-icon-btn:hover { transform: scale(1.1); }
+    .share-icon-btn.twitter  { background: #1DA1F2; }
+    .share-icon-btn.facebook { background: #1877F2; }
+    .share-icon-btn.linkedin { background: #0A66C2; }
+    .share-icon-btn.whatsapp { background: #25D366; }
+    .share-icon-btn.copy     { background: var(--surface-2); color: var(--text-soft); }
+    .share-icon-btn.copy:hover { background: #e4e4e7; }
+
+    /* FOOTER */
+    .site-footer {
+        margin-top: 4rem;
+        padding: 2.5rem 1rem;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(8px);
+        border-top: 1px solid var(--surface-2);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .primary-nav { display: none; }
+        .mobile-actions { display: flex; }
+    }
+    @media (max-width: 640px) {
+        .post-item { flex-direction: column; }
+        .post-thumbnail-wrapper { width: 100%; height: 200px; }
+        .search-modal-content { padding: 1.5rem; }
+        .post-content h1 { font-size: 1.4rem; }
+        .post-content h2 { font-size: 1.1rem; }
+        .main-wrap { padding: 1.5rem 1rem; }
+        .scroll-top { bottom: 1.25rem; left: 1.25rem; }
+    }
+    ]]></b:skin>
+</head>
+<body>
+
+    <header class='site-header'>
+        <div class='header-inner'>
+            <a class='site-title' expr:href='data:blog.homepageUrl'>
+                <data:blog.title/>
+            </a>
+
+            <nav class='primary-nav'>
+                <a expr:href='data:blog.homepageUrl'>މައިގަނޑު</a>
+                <a href='/p/about.html'>ތަޢާރަފު</a>
+
+                <div class='nav-dropdown'>
+                    <button class='nav-dropdown-trigger' type='button'>
+                        ބައިތައް <i class='fas fa-chevron-down'/>
+                    </button>
+                    <div class='nav-dropdown-content' id='navCategoryList'/>
+                </div>
+
+                <b:section id='nav-links-section' showaddelement='no'>
+                  <b:widget id='LinkList99' locked='false' title='ލިންކްތައް' type='LinkList' version='1'>
+                    <b:widget-settings>
+                      <b:widget-setting name='text-0'>English Blog</b:widget-setting>
+                      <b:widget-setting name='link-0'>https://www.ahmedsharyph.mv/</b:widget-setting>
+                    </b:widget-settings>
+                    <b:includable id='main'>
+                        <div class='nav-dropdown'>
+                            <button class='nav-dropdown-trigger' type='button'>
+                                <data:title/> <i class='fas fa-chevron-down'/>
+                            </button>
+                            <div class='nav-dropdown-content'>
+                                <b:loop values='data:links' var='link'>
+                                    <a expr:href='data:link.target'><data:link.name/></a>
+                                </b:loop>
+                            </div>
+                        </div>
+                    </b:includable>
+                  </b:widget>
+                </b:section>
+
+                <a class='lang-chip' href='https://www.ahmedsharyph.mv/' rel='noopener noreferrer' target='_blank' title='English Blog'>
+                    <i class='fas fa-globe'/>
+                    <span>English</span>
+                </a>
+
+                <button class='search-toggle' id='searchToggle' type='button'>
+                    <i class='fas fa-search'/>
+                    <span>ހޯދާ (Search)</span>
+                    <kbd>&#8984;K</kbd>
+                </button>
+            </nav>
+
+            <div class='mobile-actions'>
+                <a class='mobile-lang' href='https://www.ahmedsharyph.mv/' rel='noopener noreferrer' target='_blank' title='English Blog'>English</a>
+                <button id='searchToggleMobile' type='button' aria-label='Search'>
+                    <i class='fas fa-search'/>
+                </button>
+                <button id='menuToggle' type='button' aria-label='Menu'>
+                    <i class='fas fa-bars'/>
+                </button>
+            </div>
+        </div>
+
+        <div class='mobile-menu' id='mobileMenu'>
+            <a expr:href='data:blog.homepageUrl'>މައިގަނޑު</a>
+            <a href='/p/about.html'>ތަޢާރަފު</a>
+            <a class='mobile-lang-row' href='https://www.ahmedsharyph.mv/' rel='noopener noreferrer' target='_blank'>
+                <span>English Blog</span>
+                <span class='tag'>English</span>
+            </a>
+
+            <div class='divider'>
+                <p class='section-label'>ބައިތައް</p>
+                <div class='section-list' id='mobileCategoryList'/>
+            </div>
+
+            <div class='divider'>
+                <p class='section-label'>ލިންކްތައް</p>
+                <div class='section-list'>
+                    <b:section id='mobile-links-section' showaddelement='no'>
+                      <b:widget id='LinkList98' locked='false' title='ލިންކްތައް' type='LinkList' version='1'>
+                        <b:includable id='main'>
+                            <b:loop values='data:links' var='link'>
+                                <a expr:href='data:link.target'><data:link.name/></a>
+                            </b:loop>
+                        </b:includable>
+                      </b:widget>
+                    </b:section>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class='search-modal' id='searchModal'>
+        <div class='search-modal-content'>
+            <button class='search-close' id='searchClose' type='button'>&#215;</button>
+            <div class='search-input-wrap'>
+                <i class='fas fa-search'/>
+                <input class='search-input' id='searchInput' placeholder='ލިޔުންތަކުން ހޯދާ...' type='text'/>
+            </div>
+            <div class='search-results' id='searchResults'/>
+        </div>
+    </div>
+
+    <button class='scroll-top' id='scrollTopBtn' type='button' aria-label='Scroll to top'>
+        <i class='fas fa-arrow-up'/>
+    </button>
+
+    <div class='main-wrap'>
+        <main>
+            <b:section id='main-content' showaddelement='yes'>
+              <b:widget id='Blog1' locked='true' title='Blog Posts' type='Blog' version='1'>
+                <b:includable id='main'>
+                    <div class='post-list'>
+                        <b:loop values='data:posts' var='post'>
+                            <article class='post-card'>
+                                <b:if cond='data:blog.pageType == &quot;item&quot;'>
+                                    <div class='post-content'>
+                                        <h1><data:post.title/></h1>
+
+                                        <div class='post-meta'>
+                                            <span class='post-meta-item'>
+                                                <i class='far fa-calendar'/>
+                                                <span expr:content='data:post.date.iso8601'><data:post.date/></span>
+                                            </span>
+                                            <span class='post-meta-item'>
+                                                <i class='far fa-clock'/>
+                                                <span>ކިޔަން ނަގާނީ <span class='read-time-output' expr:data-body='data:post.body'>1</span> މިނެޓު</span>
+                                            </span>
+                                        </div>
+
+                                        <div class='post-body'>
+                                            <data:post.body/>
+                                        </div>
+
+                                        <div class='post-share'>
+                                            <span class='post-share-label'>މި ލިޔުން ޝާއިޢު ކުރައްވާ</span>
+                                            <div class='share-icons'>
+                                                <button class='share-icon-btn twitter'  onclick='sharePost(&apos;twitter&apos;)'  title='Twitter ގައި ޝެއާ ކުރައްވާ'  type='button'><i class='fab fa-twitter'/></button>
+                                                <button class='share-icon-btn facebook' onclick='sharePost(&apos;facebook&apos;)' title='Facebook ގައި ޝެއާ ކުރައްވާ' type='button'><i class='fab fa-facebook-f'/></button>
+                                                <button class='share-icon-btn linkedin' onclick='sharePost(&apos;linkedin&apos;)' title='LinkedIn ގައި ޝެއާ ކުރައްވާ' type='button'><i class='fab fa-linkedin-in'/></button>
+                                                <button class='share-icon-btn whatsapp' onclick='sharePost(&apos;whatsapp&apos;)' title='WhatsApp ގައި ޝެއާ ކުރައްވާ' type='button'><i class='fab fa-whatsapp'/></button>
+                                                <button class='share-icon-btn copy'     onclick='copyLink()'                title='ލިންކް ކޮޕީ ކުރައްވާ'      type='button'><i class='fas fa-link'/></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <b:else/>
+                                    <div class='post-item'>
+                                        <div class='post-thumbnail-wrapper'>
+                                            <b:if cond='data:post.thumbnailUrl'>
+                                                <a expr:href='data:post.url'>
+                                                    <img expr:alt='data:post.title' expr:src='data:post.thumbnailUrl' loading='lazy'/>
+                                                </a>
+                                            <b:else/>
+                                                <a class='external-thumb-link hidden' expr:href='data:post.url'>
+                                                    <img class='external-thumb-img' expr:alt='data:post.title' loading='lazy'/>
+                                                </a>
+                                                <div class='post-thumbnail-placeholder'>
+                                                    <i class='fas fa-image'/>
+                                                </div>
+                                            </b:if>
+                                        </div>
+
+                                        <div class='post-content'>
+                                            <h2>
+                                                <a expr:href='data:post.url'><data:post.title/></a>
+                                            </h2>
+
+                                            <div class='post-meta'>
+                                                <span class='post-meta-item'>
+                                                    <i class='far fa-calendar'/>
+                                                    <span expr:content='data:post.date.iso8601'><data:post.date/></span>
+                                                </span>
+                                                <span class='post-meta-item'>
+                                                    <i class='far fa-clock'/>
+                                                    <span>ކިޔަން ނަގާނީ <span class='read-time-output' expr:data-body='data:post.snippet'>1</span> މިނެޓު</span>
+                                                </span>
+                                            </div>
+
+                                            <div class='post-snippet-body hidden' style='display:none;'>
+                                                <data:post.body/>
+                                            </div>
+
+                                            <div class='post-snippet'>
+                                                <data:post.snippet/>
+                                            </div>
+
+                                            <a class='read-more' expr:href='data:post.url'>
+                                                ފުރިހަމައަށް ވިދާޅުވުމަށް
+                                                <i class='fas fa-chevron-left'/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </b:if>
+                            </article>
+                        </b:loop>
+                    </div>
+                </b:includable>
+              </b:widget>
+            </b:section>
+        </main>
+    </div>
+
+    <footer class='site-footer'>
+        <div style='max-width:56rem; margin:0 auto; padding:0 1rem;'>
+            <p>&#169; 2018 - <span id='current-year'/> <data:blog.title/>. ހުރިހާ ޙައްޤެއް މަޙްފޫޡުކުރެވިފައި</p>
+        </div>
+    </footer>
+
+    <script>
+    //<![CDATA[
+    (function() {
+        'use strict';
+
+        var yearEl = document.getElementById('current-year');
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+
+        function calculateReadingTimes() {
+            var elements = document.querySelectorAll('.read-time-output');
+            elements.forEach(function(el) {
+                var text = el.getAttribute('data-body') || el.innerText || '';
+                var cleanText = text.replace(/<[^>]*>/g, '');
+                var words = cleanText.trim().split(/\s+/).length;
+                var wpm = 200;
+                var minutes = Math.ceil(words / wpm);
+                if (minutes < 1) minutes = 1;
+                el.textContent = minutes;
+            });
+        }
+
+        function parseExternalThumbnails() {
+            var posts = document.querySelectorAll('.post-item');
+            posts.forEach(function(post) {
+                var placeholder = post.querySelector('.post-thumbnail-placeholder');
+                var thumbLink = post.querySelector('.external-thumb-link');
+                var thumbImg = post.querySelector('.external-thumb-img');
+                var snippetBody = post.querySelector('.post-snippet-body');
+
+                if (snippetBody && thumbImg && placeholder) {
+                    var tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = snippetBody.innerHTML;
+                    var firstImg = tempDiv.querySelector('img');
+
+                    if (firstImg && firstImg.src) {
+                        thumbImg.src = firstImg.src;
+                        thumbLink.classList.remove('hidden');
+                        placeholder.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        var menuToggle = document.getElementById('menuToggle');
+        var mobileMenu = document.getElementById('mobileMenu');
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('open');
+            });
+        }
+
+        var searchToggle = document.getElementById('searchToggle');
+        var searchToggleMobile = document.getElementById('searchToggleMobile');
+        var searchModal = document.getElementById('searchModal');
+        var searchClose = document.getElementById('searchClose');
+        var searchInput = document.getElementById('searchInput');
+        var searchResults = document.getElementById('searchResults');
+
+        function openSearch() {
+            searchModal.classList.add('active');
+            setTimeout(function() { searchInput.focus(); }, 100);
+        }
+
+        function closeSearch() {
+            searchModal.classList.remove('active');
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        }
+
+        if (searchToggle) searchToggle.addEventListener('click', openSearch);
+        if (searchToggleMobile) searchToggleMobile.addEventListener('click', openSearch);
+        if (searchClose) searchClose.addEventListener('click', closeSearch);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSearch();
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                if (searchModal.classList.contains('active')) {
+                    closeSearch();
+                } else {
+                    openSearch();
+                }
+            }
+        });
+
+        if (searchModal) {
+            searchModal.addEventListener('click', function(e) {
+                if (e.target === this) closeSearch();
+            });
+        }
+
+        var allPosts = [];
+
+        function fetchAllPosts() {
+            fetch('/feeds/posts/summary?alt=json&max-results=150')
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    var entries = data.feed.entry || [];
+                    allPosts = entries.map(function(entry) {
+                        var link = entry.link.find(function(l) { return l.rel === 'alternate'; });
+                        return {
+                            id: entry.id.$t,
+                            title: entry.title.$t || 'Untitled',
+                            snippet: entry.summary ? entry.summary.$t.substring(0, 150) : '',
+                            url: link ? link.href : '#',
+                            date: new Date(entry.published.$t).toLocaleDateString()
+                        };
+                    });
+                })
+                .catch(function(error) {
+                    console.error('Error fetching posts:', error);
+                });
+        }
+
+        function searchPosts(query) {
+            if (!query || query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            var term = query.toLowerCase();
+            var results = allPosts.filter(function(post) {
+                return post.title.toLowerCase().includes(term) ||
+                       post.snippet.toLowerCase().includes(term);
+            });
+
+            results = results.slice(0, 10);
+
+            if (results.length === 0) {
+                searchResults.innerHTML = '<div class="no-results"><i class="fas fa-search"></i><p>ކއްވެސް ނުފެނުނު</p></div>';
+                return;
+            }
+
+            var html = '';
+            results.forEach(function(post) {
+                html += '<a href="' + post.url + '" class="search-result-item">';
+                html += '<h4>' + post.title + '</h4>';
+                html += '<p>' + post.snippet + '</p>';
+                html += '<span class="post-date">' + post.date + '</span>';
+                html += '</a>';
+            });
+
+            searchResults.innerHTML = html;
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                searchPosts(this.value);
+            });
+        }
+
+        window.sharePost = function(platform) {
+            var url = encodeURIComponent(window.location.href);
+            var title = encodeURIComponent(document.querySelector('h1') ? document.querySelector('h1').textContent : '');
+            var shareUrls = {
+                twitter: 'https://twitter.com/intent/tweet?url=' + url + '&text=' + title,
+                facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + url,
+                linkedin: 'https://www.linkedin.com/sharing/share-offsite/?url=' + url,
+                whatsapp: 'https://api.whatsapp.com/send?text=' + title + '%20-%20' + url
+            };
+            window.open(shareUrls[platform], '_blank', 'width=600,height=400');
+        };
+
+        window.copyLink = function() {
+            navigator.clipboard.writeText(window.location.href).then(function() {
+                var btn = event.target.closest('.share-icon-btn');
+                var originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(function() { btn.innerHTML = originalHtml; }, 2000);
+            });
+        };
+
+        var scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 500) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+
+        if (scrollBtn) {
+            scrollBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        function fetchCategories() {
+            fetch('/feeds/posts/summary?alt=json&max-results=150')
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    var entries = data.feed.entry || [];
+                    var categoryMap = {};
+
+                    entries.forEach(function(entry) {
+                        if (entry.category) {
+                            entry.category.forEach(function(cat) {
+                                var term = cat.term;
+                                if (!categoryMap[term]) {
+                                    categoryMap[term] = { name: term };
+                                }
+                            });
+                        }
+                    });
+
+                    var categories = Object.values(categoryMap);
+                    var navList = document.getElementById('navCategoryList');
+                    var mobileList = document.getElementById('mobileCategoryList');
+
+                    var navHtml = '';
+                    var mobileHtml = '';
+
+                    categories.forEach(function(cat) {
+                        var catUrl = '/search/label/' + encodeURIComponent(cat.name);
+                        navHtml += '<a href="' + catUrl + '">' + cat.name + '</a>';
+                        mobileHtml += '<a href="' + catUrl + '">' + cat.name + '</a>';
+                    });
+
+                    if (navList) navList.innerHTML = navHtml;
+                    if (mobileList) mobileList.innerHTML = mobileHtml;
+                })
+                .catch(function(error) {
+                    console.error('Error fetching categories:', error);
+                });
+        }
+
+        fetchAllPosts();
+        fetchCategories();
+        calculateReadingTimes();
+        parseExternalThumbnails();
+    })();
+    //]]>
+    </script>
+</body>
+</html>
